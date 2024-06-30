@@ -1,13 +1,21 @@
-CC = gcc
-CFLAGS = -Iinclude
+TARGET = my_rtos_project
+CC = arm-none-eabi-gcc
+CFLAGS = -mcpu=cortex-m3 -mthumb -Wall -O2
+LDFLAGS = -Tsrc/startup/linker_script.ld
 
-all: my_c_project
+SRCS = src/main.c src/rtos.c src/startup/startup_stm32f103xx.s
+OBJS = $(SRCS:.c=.o) $(SRCS:.s=.o)
 
-my_c_project: src/main.o
-	$(CC) -o my_c_project src/main.o
+$(TARGET).elf: $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $@ $(LDFLAGS)
 
-src/main.o: src/main.c
-	$(CC) $(CFLAGS) -c src/main.c -o src/main.o
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+%.o: %.s
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f src/*.o my_c_project
+	rm -f $(OBJS) $(TARGET).elf
+
+.PHONY: clean
