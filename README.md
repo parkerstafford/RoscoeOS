@@ -33,4 +33,4 @@ This project implements a basic Real-Time Operating System (RTOS) for the STM32F
 Use `st-flash` or a similar tool to flash the firmware to your STM32F103C8T6 microcontroller.
 
 ```sh
-st-flash write build/my_rtos_project.elf 0x08000000
+st-flash write build/RoscoeOS.elf 0x08000000
